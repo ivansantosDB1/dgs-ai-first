@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Discovery AI First - NovaTech</title>
+    <style>
+        /* CSS Variables para Identidade Visual DB1 */
+        :root {
+            --db1-blue: #002D4B;
+            --db1-light-blue: #00A9E0;
+            --db1-gray: #F4F6F8;
+            --db1-dark-gray: #333333;
+            --white: #FFFFFF;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--db1-dark-gray);
+            background-color: var(--db1-gray);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--white);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Capa */
+        .cover {
+            background: linear-gradient(135deg, var(--db1-blue) 0%, #001a2c 100%);
+            color: var(--white);
+            padding: 80px 50px;
+            text-align: center;
+            border-bottom: 6px solid var(--db1-light-blue);
+        }
+
+        .cover img {
+            max-height: 70px;
+            margin-bottom: 40px;
+        }
+
+        .cover h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            font-weight: 300;
+        }
+
+        .cover h2 {
+            font-size: 1.4em;
+            color: var(--db1-light-blue);
+            font-weight: 400;
+            margin-bottom: 50px;
+        }
+
+        .author-info {
+            text-align: right;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+        }
+
+        .author-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .author-info p {
+            margin: 5px 0 0 0;
+            color: #ccc;
+        }
+
+        /* Navegação / Sumário */
+        .toc {
+            background-color: #f9f9f9;
+            padding: 30px 50px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .toc h3 {
+            color: var(--db1-blue);
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: var(--db1-light-blue);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--db1-blue);
+        }
+
+        /* Seções */
+        .section {
+            padding: 50px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title {
+            color: var(--db1-blue);
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--db1-light-blue);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title span.badge {
+            background-color: var(--db1-light-blue);
+            color: white;
+            font-size: 0.4em;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        h3, h4 {
+            color: var(--db1-blue);
+        }
+
+        /* Tabelas e Matrizes */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--db1-blue);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fcfd;
+        }
+
+        /* Timeline Visual */
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 40px 0;
+            padding-left: 30px;
+            border-left: 3px solid var(--db1-light-blue);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--white);
+            border: 3px solid var(--db1-light-blue);
+        }
+
+        .timeline-content {
+            background: #f8fcfd;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .timeline-content h4 {
+            margin-top: 0;
+            color: var(--db1-light-blue);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .timeline-content .duration {
+            font-size: 0.8em;
+            color: #666;
+            background: #e0e0e0;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        /* Cards de Riscos */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .risk-card {
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--db1-blue);
+        }
+
+        .risk-card.high { border-top-color: var(--danger); }
+        .risk-card.medium { border-top-color: var(--warning); }
+        .risk-card.low { border-top-color: var(--success); }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .risk-badge {
+            font-size: 0.75em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .risk-badge.high { background-color: var(--danger); }
+        .risk-badge.medium { background-color: var(--warning); color: #333;}
+        .risk-badge.low { background-color: var(--success); }
+
+        /* Blocos de Atividades */
+        .activity-block {
+            background: #fff;
+            border-left: 4px solid var(--db1-blue);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .activity-block h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .activity-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            font-size: 0.9em;
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border: 1px solid #b3e5fc;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--db1-blue);
+            color: white;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CAPA EXECUTIVA -->
+    <div class="cover">
+        <img src="https://db1.com.br/wp-content/uploads/2021/11/logo-db1-group.svg" alt="DB1 Global Software">
+        <h1>Plano Executivo de Discovery</h1>
+        <h2>Metodologia AI First SDLC - Assistente de IA Corporativo</h2>
+        <p style="font-size: 1.1em; max-width: 600px; margin: 0 auto; color: #b3e5fc;">
+            Estratégia de aceleração e mitigação de riscos para o ecossistema documental da NovaTech.
+        </p>
+        
+        <div class="author-info">
+            <h3>Ivan Ramos dos Santos</h3>
+            <p>Gerente de Projetos</p>
+            <p>DB1 Global Software</p>
+        </div>
+    </div>
+
+    <!-- SUMÁRIO NAVEGÁVEL -->
+    <div class="toc">
+        <h3>Sumário Executivo</h3>
+        <ul>
+            <li><a href="#parte1">1. Plano de Discovery AI First (Fase Intent)</a></li>
+            <li><a href="#parte2">2. Planejamento do Discovery (Cronograma)</a></li>
+            <li><a href="#parte3">3. Pré-Requisitos da NovaTech</a></li>
+            <li><a href="#parte4">4. Gestão de Riscos do Discovery</a></li>
+            <li><a href="#raci">5. Matriz de Responsabilidades (RACI)</a></li>
+        </ul>
+    </div>
+
+    <!-- PARTE 1 -->
+    <div id="parte1" class="section">
+        <h2 class="section-title">1. Plano de Discovery AI First <span class="badge">Metodologia Exclusiva</span></h2>
+        
+        <div class="highlight-box">
+            <strong>Objetivos da Fase de Intent:</strong> A fase de Intent antecede o engajamento massivo de stakeholders. Seu propósito é utilizar Agentes Especializados de IA para varrer o acervo documental bruto (800 docs SharePoint, 400 págs Confluence, 50 planilhas). 
+            <br><br>
+            <strong>Benefícios:</strong> Elimina o viés humano inicial, mapeia o "as-is" real da companhia em horas (não semanas), detecta inconsistências de forma autônoma e transforma entrevistas de levantamento de requisitos em <em>reuniões de decisão e priorização</em>, reduzindo drasticamente o esforço dos especialistas de negócio e garantindo o prazo de 2 semanas para o Discovery.
+        </div>
+
+        <h3>1.1. Atividades Executadas por Agentes de IA</h3>
+        <p>Durante os primeiros dias, os Agentes de IA atuarão como analistas de dados de alta performance, executando processamento em lote sobre o ecossistema da NovaTech.</p>
+
+        <div class="activity-block">
+            <h4>A. Catalogação e Classificação Automática</h4>
+            <div class="activity-details">
+                <div><strong>Objetivo:</strong> Criar um índice unificado e tagueado de todo o acervo.</div>
+                <div><strong>Entradas:</strong> Conexão via API de leitura ao SharePoint, Confluence e rede.</div>
+                <div><strong>Saídas:</strong> Inventário digital classificado por departamento, tema e nível de sigilo.</div>
+                <div><strong>Benefício:</strong> Visão macro instantânea da dispersão de conhecimento.</div>
+            </div>
+        </div>
+
+        <div class="activity-block">
+            <h4>B. Detecção de Conflitos e Duplicidades</h4>
+            <div class="activity-details">
+                <div><strong>Objetivo:</strong> Identificar regras de negócio contraditórias ou versões sobrepostas.</div>
+                <div><strong>Entradas:</strong> Inventário digital classificado.</div>
+                <div><strong>Saídas:</strong> "Heatmap de Inconsistências" apontando exatamente quais documentos conflitam.</div>
+                <div><strong>Benefício:</strong> Foca o esforço humano da NovaTech apenas na resolução do conflito, não na busca por ele.</div>
+            </div>
+        </div>
+
+        <div class="activity-block">
+            <h4>C. Análise de Lacunas (Gap Analysis) e Geração de Perguntas</h4>
+            <div class="activity-details">
+                <div><strong>Objetivo:</strong> Descobrir o que "falta" na base de conhecimento.</div>
+                <div><strong>Entradas:</strong> Histórico amigável de tickets de atendimento e base de documentos.</div>
+                <div><strong>Saídas:</strong> Roteiro de entrevistas com perguntas cirúrgicas para os stakeholders.</div>
+                <div><strong>Benefício:</strong> As entrevistas humanas partem de dúvidas avançadas, acelerando a definição do produto.</div>
+            </div>
+        </div>
+
+        <h3>1.2. Atividades Executadas por Humanos</h3>
+        <p>Com a Inteligência Artificial mapeando o cenário base, o time humano de especialistas atua de forma estratégica.</p>
+
+        <div class="activity-block" style="border-left-color: var(--db1-light-blue);">
+            <h4>A. Resolução de Conflitos e Governança</h4>
+            <div class="activity-details">
+                <div><strong>Objetivo:</strong> Definir qual versão da regra é a "fonte da verdade".</div>
+                <div><strong>Participantes:</strong> Especialistas de Negócio, Representante de Compliance.</div>
+                <div><strong>Dependência (Intent):</strong> Heatmap de Inconsistências gerado pela IA.</div>
+                <div><strong>Resultado:</strong> Aprovação das fontes oficiais para alimentar o futuro Assistente.</div>
+            </div>
+        </div>
+
+        <div class="activity-block" style="border-left-color: var(--db1-light-blue);">
+            <h4>B. Entrevistas Estratégicas e Refinamento</h4>
+            <div class="activity-details">
+                <div><strong>Objetivo:</strong> Validar processos não documentados identificados pela IA.</div>
+                <div><strong>Participantes:</strong> Gerente de Projetos, EMERSON.MASSAMITSU (Tech Lead), Operações.</div>
+                <div><strong>Dependência (Intent):</strong> Roteiro gerado no Gap Analysis.</div>
+                <div><strong>Resultado:</strong> Requisitos funcionais e não-funcionais validados.</div>
+            </div>
+        </div>
+
+        <h3>1.3. Sequência Recomendada</h3>
+        <p>A arquitetura do cronograma reflete a sinergia humano-máquina para garantir a execução em 2 semanas:</p>
+        <ol>
+            <li><strong>Dias 1-3 (Ingestão e Intent Automático):</strong> Os Agentes de IA trabalham em background consumindo o volume de dados e gerando relatórios de divergência.</li>
+            <li><strong>Dias 4-7 (Validação Humana Direcionada):</strong> Stakeholders são acionados apenas para decidir sobre os relatórios de conflito gerados (ex: "A política X diz A, a wiki Y diz B. Qual a correta?").</li>
+            <li><strong>Dias 8-10 (Design e Alinhamento):</strong> Desenho da solução final e aprovação executiva do escopo de implementação para o rollout de 2.5 meses restantes.</li>
+        </ol>
+        <p><em>Justificativa:</em> Esta sequência inverte o paradigma tradicional. Em vez de passar semanas perguntando como os processos funcionam, a IA apresenta como eles <em>realmente estão documentados</em>, forçando uma correção de rota rápida e mitigando o risco de "lixo entra, lixo sai" (GIGO) na futura GenAI.</p>
+    </div>
+
+    <!-- PARTE 2 -->
+    <div id="parte2" class="section">
+        <h2 class="section-title">2. Planejamento do Discovery <span class="badge">Cronograma (2 Semanas)</span></h2>
+        
+        <div class="timeline">
+            <!-- Semana 1 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h4>Semana 1: Fase de Intent e Análise Estrutural <span class="duration">Dias 1 a 5</span></h4>
+                    <table>
+                        <tr>
+                            <th>Atividade</th>
+                            <th>Responsável</th>
+                            <th>Dependência</th>
+                            <th>Entregável</th>
+                        </tr>
+                        <tr>
+                            <td>Setup de Acessos e Conectores</td>
+                            <td>Tech Lead (EMERSON.MASSAMITSU)</td>
+                            <td>Liberação TI NovaTech</td>
+                            <td>Ambiente Conectado</td>
+                        </tr>
+                        <tr>
+                            <td>Ingestão e Catalogação IA</td>
+                            <td>Agentes de IA</td>
+                            <td>Setup de Acessos</td>
+                            <td>Inventário Digital Unificado</td>
+                        </tr>
+                        <tr>
+                            <td>Detecção de Conflitos e Gaps</td>
+                            <td>Agentes de IA</td>
+                            <td>Catalogação IA</td>
+                            <td>Heatmap de Inconsistências</td>
+                        </tr>
+                        <tr>
+                            <td>Análise do Relatório e Preparo de Workshops</td>
+                            <td>Gerente de Projetos / Tech Lead</td>
+                            <td>Heatmap</td>
+                            <td>Pauta Direcionada para Stakeholders</td>
+                        </tr>
+                        <tr>
+                            <td>Kickoff com Stakeholders (Apresentação do "As-Is")</td>
+                            <td>Gerente de Projetos / Patrocinador</td>
+                            <td>Pauta Direcionada</td>
+                            <td>Alinhamento de Expectativas</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Semana 2 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h4>Semana 2: Resolução Humana e Design da Solução <span class="duration">Dias 6 a 10</span></h4>
+                    <table>
+                        <tr>
+                            <th>Atividade</th>
+                            <th>Responsável</th>
+                            <th>Dependência</th>
+                            <th>Entregável</th>
+                        </tr>
+                        <tr>
+                            <td>Workshops de Resolução Documental</td>
+                            <td>Espec. Negócio / Compliance</td>
+                            <td>Kickoff / Heatmap</td>
+                            <td>Fontes da Verdade Definidas</td>
+                        </tr>
+                        <tr>
+                            <td>Definição de Critérios de Sucesso (KPIs)</td>
+                            <td>Gerente de Projetos / Operações</td>
+                            <td>Workshops</td>
+                            <td>Matriz de KPIs do Assistente</td>
+                        </tr>
+                        <tr>
+                            <td>Desenho da Arquitetura RAG e Prompts Base</td>
+                            <td>Tech Lead / Agentes de IA</td>
+                            <td>Fontes da Verdade</td>
+                            <td>Documento de Arquitetura</td>
+                        </tr>
+                        <tr>
+                            <td>Elaboração do Roadmap de Implementação</td>
+                            <td>Gerente de Projetos</td>
+                            <td>Desenho RAG</td>
+                            <td>Backlog e Cronograma de Build</td>
+                        </tr>
+                        <tr>
+                            <td>Apresentação Final do Discovery e Sign-off</td>
+                            <td>PM / Patrocinador / Todos</td>
+                            <td>Roadmap</td>
+                            <td>Aprovação Executiva para Início do Build</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARTE 3 -->
+    <div id="parte3" class="section">
+        <h2 class="section-title">3. Pré-Requisitos da NovaTech</h2>
+        <p>Para garantir o prazo agressivo de duas semanas, a NovaTech deverá providenciar até o <strong>Dia 0</strong> os seguintes itens essenciais:</p>
+
+        <div class="activity-block">
+            <h4>Acessos de Sistema (Leitura)</h4>
+            <ul>
+                <li>Credencial de serviço com permissão de leitura global no <strong>SharePoint Corporativo</strong>.</li>
+                <li>Token/API Key para leitura das 400 páginas do <strong>Confluence</strong>.</li>
+                <li>Acesso mapeado às pastas de rede onde residem as 50 planilhas operacionais.</li>
+            </ul>
+        </div>
+
+        <div class="activity-block">
+            <h4>Informações e Documentação Estrutural</h4>
+            <ul>
+                <li>Organograma atualizado das áreas responsáveis pelo atendimento e documentação.</li>
+                <li>Catálogo básico de sistemas internos citados nas regras de negócio.</li>
+                <li>Políticas internas de segurança de dados (para restrição de acesso da IA).</li>
+            </ul>
+        </div>
+
+        <div class="activity-block">
+            <h4>Pessoas e Disponibilidade (Timebox Semanal)</h4>
+            <ul>
+                <li><strong>Patrocinador Executivo:</strong> 2 horas/semana (Kickoff e Sign-off).</li>
+                <li><strong>Especialistas de Negócio e Compliance:</strong> 4 a 6 horas/semana (Focadas nos workshops de resolução de conflitos apontados pela IA).</li>
+                <li><strong>Equipe de TI/Infraestrutura:</strong> 2 horas na Semana 1 para liberação de acessos.</li>
+                <li><strong>Representante de Operações/Atendimento:</strong> 3 horas/semana para validação de fluxos.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PARTE 4 -->
+    <div id="parte4" class="section">
+        <h2 class="section-title">4. Gestão de Riscos do Discovery</h2>
+        
+        <div class="risk-grid">
+            <div class="risk-card high">
+                <div class="risk-header">
+                    <h4 style="margin:0;">Bloqueio de Acessos</h4>
+                    <span class="risk-badge high">Alto Risco</span>
+                </div>
+                <p><strong>Cenário:</strong> Falta de acesso aos repositórios no Dia 1 inviabiliza a Fase de Intent da IA.</p>
+                <p><strong>Probabilidade:</strong> Média | <strong>Impacto:</strong> Alto</p>
+                <hr style="border: 0; border-top: 1px solid #eee;">
+                <p><strong>Mitigação:</strong> Envio de formulário de acessos 7 dias antes do Kickoff. Estabelecer ambiente espelho de contingência caso APIs falhem.</p>
+            </div>
+
+            <div class="risk-card high">
+                <div class="risk-header">
+                    <h4 style="margin:0;">Conflito Crítico Documental</h4>
+                    <span class="risk-badge high">Alto Risco</span>
+                </div>
+                <p><strong>Cenário:</strong> IA encontra volume massivo de regras divergentes sem dono claro para resolução no prazo.</p>
+                <p><strong>Probabilidade:</strong> Alta | <strong>Impacto:</strong> Alto</p>
+                <hr style="border: 0; border-top: 1px solid #eee;">
+                <p><strong>Mitigação:</strong> Priorizar resolução de conflitos usando a Regra de Pareto (resolver apenas os 20% de documentos mais acessados pelo atendimento na V1).</p>
+            </div>
+
+            <div class="risk-card medium">
+                <div class="risk-header">
+                    <h4 style="margin:0;">Baixa Disponibilidade</h4>
+                    <span class="risk-badge medium">Médio Risco</span>
+                </div>
+                <p><strong>Cenário:</strong> Especialistas não participam dos workshops de decisão.</p>
+                <p><strong>Probabilidade:</strong> Média | <strong>Impacto:</strong> Médio</p>
+                <hr style="border: 0; border-top: 1px solid #eee;">
+                <p><strong>Mitigação:</strong> Uso de painéis assíncronos gerados pela IA, permitindo que especialistas validem aprovações via e-mail sem necessidade de reuniões.</p>
+            </div>
+
+            <div class="risk-card low">
+                <div class="risk-header">
+                    <h4 style="margin:0;">Dependência da IA (Alucinação)</h4>
+                    <span class="risk-badge low">Baixo Risco</span>
+                </div>
+                <p><strong>Cenário:</strong> Aceitação cega do relatório de gaps gerado pelos Agentes.</p>
+                <p><strong>Probabilidade:</strong> Baixa | <strong>Impacto:</strong> Alto</p>
+                <hr style="border: 0; border-top: 1px solid #eee;">
+                <p><strong>Mitigação:</strong> Processo estrito de "Human-in-the-loop". A IA gera insumos estruturados, mas a aprovação do modelo de negócio é obrigatoriamente humana.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MATRIZ RACI -->
+    <div id="raci" class="section">
+        <h2 class="section-title">5. Matriz de Responsabilidades (RACI)</h2>
+        <p><em>R = Responsible (Executa), A = Accountable (Aprova), C = Consulted (Consultado), I = Informed (Informado)</em></p>
+        
+        <table>
+            <tr>
+                <th>Atividade</th>
+                <th>Gerente Projetos</th>
+                <th>Tech Lead</th>
+                <th>Agentes IA</th>
+                <th>Espec. Negócio</th>
+                <th>Patrocinador</th>
+            </tr>
+            <tr>
+                <td>Ingestão de Repositórios</td>
+                <td>A</td>
+                <td>R</td>
+                <td>R</td>
+                <td>I</td>
+                <td>I</td>
+            </tr>
+            <tr>
+                <td>Mapeamento de Conflitos</td>
+                <td>A</td>
+                <td>I</td>
+                <td>R</td>
+                <td>I</td>
+                <td>I</td>
+            </tr>
+            <tr>
+                <td>Resolução de Regras (Fonte da Verdade)</td>
+                <td>C</td>
+                <td>I</td>
+                <td>I</td>
+                <td>R / A</td>
+                <td>I</td>
+            </tr>
+            <tr>
+                <td>Desenho da Arquitetura RAG</td>
+                <td>C</td>
+                <td>R / A</td>
+                <td>C</td>
+                <td>I</td>
+                <td>I</td>
+            </tr>
+            <tr>
+                <td>Aprovação do Plano e Go/No-Go</td>
+                <td>R</td>
+                <td>C</td>
+                <td>-</td>
+                <td>C</td>
+                <td>A</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="footer">
+        <strong>DB1 Global Software</strong><br>
+        Documento Estratégico e Confidencial - Elaborado para NovaTech<br>
+        2026 © Todos os direitos reservados.
+    </div>
+
+</div>
+
+</body>
+</html>
