@@ -1,0 +1,369 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --fs:14px;--fss:12px;--fsl:18px;--fsh:22px;
+    --gap:24px;--card-r:12px;--row-gap:12px;
+  }
+  body{font-family:'DM Sans',sans-serif;font-size:var(--fs);color:var(--color-text-primary);line-height:1.6}
+  .wrap{padding:2rem 0;display:flex;flex-direction:column;gap:32px}
+
+  .doc-header{display:flex;flex-direction:column;gap:8px;border-bottom:0.5px solid var(--color-border-secondary);padding-bottom:20px}
+  .doc-badge{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-tertiary)}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.2;color:var(--color-text-primary)}
+  .doc-subtitle{font-size:var(--fss);color:var(--color-text-secondary)}
+  .doc-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:4px}
+  .meta-pill{font-size:11px;padding:3px 10px;border-radius:100px;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary)}
+
+  .section-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:8px}
+  .section-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--color-text-primary);margin-bottom:14px}
+  
+  /* Viabilidade */
+  .viab-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .viab-card{background:var(--color-background-secondary);border-radius:var(--card-r);padding:14px 16px;border:0.5px solid var(--color-border-tertiary)}
+  .viab-card-title{font-size:var(--fss);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .viab-card-title .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .dot-green{background:#3B6D11}
+  .dot-amber{background:#BA7517}
+  .viab-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:var(--fss);color:var(--color-text-secondary);line-height:1.45}
+  .viab-item i{font-size:13px;flex-shrink:0;margin-top:1px}
+  .verdict-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-left:3px solid #3B6D11;border-radius:0 var(--card-r) var(--card-r) 0;padding:12px 16px}
+  .verdict-box p{font-size:var(--fss);color:var(--color-text-secondary);line-height:1.55}
+
+  /* Gauge de viabilidade */
+  .gauge-wrap{display:flex;align-items:center;gap:16px;background:var(--color-background-secondary);border-radius:var(--card-r);padding:14px 18px;border:0.5px solid var(--color-border-tertiary);margin-bottom:14px}
+  .gauge-track{flex:1;height:8px;background:var(--color-border-tertiary);border-radius:4px;overflow:hidden}
+  .gauge-fill{height:100%;background:linear-gradient(90deg,#639922,#3B6D11);border-radius:4px;width:72%}
+  .gauge-label{font-size:var(--fss);color:var(--color-text-secondary);white-space:nowrap}
+  .gauge-score{font-size:18px;font-weight:500;color:#3B6D11;white-space:nowrap}
+
+  /* Mapa de riscos */
+  .risk-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .rf-btn{font-size:11px;padding:4px 12px;border-radius:100px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+  .rf-btn.active,.rf-btn:hover{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary)}
+  .risk-table{width:100%;border-collapse:collapse}
+  .risk-table th{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-tertiary);padding:6px 10px;text-align:left;border-bottom:0.5px solid var(--color-border-secondary)}
+  .risk-row{border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer;transition:background .1s}
+  .risk-row:hover{background:var(--color-background-secondary)}
+  .risk-row td{padding:10px 10px;vertical-align:top;font-size:var(--fss)}
+  .risk-name{font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+  .risk-desc{color:var(--color-text-secondary);line-height:1.4}
+  .pill{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px}
+  .p-alta{background:#FCEBEB;color:#791F1F}
+  .p-media{background:#FAEEDA;color:#633806}
+  .p-baixa{background:#EAF3DE;color:#27500A}
+  .impact-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+  .impact-chip{font-size:10px;padding:2px 7px;border-radius:4px;border:0.5px solid var(--color-border-secondary);color:var(--color-text-tertiary)}
+
+  .expand-panel{display:none;background:var(--color-background-secondary);border-radius:var(--card-r);padding:12px 14px;margin:2px 0 6px;font-size:var(--fss);color:var(--color-text-secondary);line-height:1.55;border:0.5px solid var(--color-border-tertiary)}
+  .expand-panel.open{display:block}
+  .expand-panel strong{color:var(--color-text-primary);font-weight:500}
+
+  /* Questões tech lead */
+  .q-list{display:flex;flex-direction:column;gap:10px}
+  .q-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--card-r);padding:14px 16px;display:flex;gap:12px;cursor:pointer;transition:border-color .15s}
+  .q-card:hover{border-color:var(--color-border-primary)}
+  .q-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--color-text-tertiary);flex-shrink:0;line-height:1}
+  .q-body{}
+  .q-title{font-weight:500;font-size:var(--fs);color:var(--color-text-primary);margin-bottom:4px}
+  .q-text{font-size:var(--fss);color:var(--color-text-secondary);line-height:1.5}
+  .q-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:100px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-tertiary);margin-top:6px}
+
+  /* Conclusão */
+  .conclusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .concl-card{border-radius:var(--card-r);padding:14px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+  .concl-icon{font-size:18px;margin-bottom:6px}
+  .concl-label{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:4px}
+  .concl-val{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+  .rec-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-left:3px solid #185FA5;border-radius:0 var(--card-r) var(--card-r) 0;padding:14px 18px}
+  .rec-box p{font-size:var(--fss);color:var(--color-text-secondary);line-height:1.6}
+  .rec-box strong{color:var(--color-text-primary);font-weight:500}
+
+  @media(prefers-color-scheme:dark){
+    .p-alta{background:#501313;color:#F7C1C1}
+    .p-media{background:#412402;color:#FAC775}
+    .p-baixa{background:#173404;color:#C0DD97}
+    .gauge-fill{background:linear-gradient(90deg,#639922,#C0DD97)}
+    .gauge-score{color:#97C459}
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <span class="doc-badge">Análise Executiva · DB1 Group</span>
+    <h1 class="doc-title">Assistente de IA para Atendimento<br>NovaTech Logística</h1>
+    <p class="doc-subtitle">Viabilidade técnica, mapa de riscos e questões para validação — solução RAG + Azure AI Services</p>
+    <div class="doc-meta">
+      <span class="meta-pill"><i class="ti ti-building" aria-hidden="true"></i> NovaTech · 1.200 colaboradores</span>
+      <span class="meta-pill"><i class="ti ti-calendar" aria-hidden="true"></i> Prazo: 3 meses</span>
+      <span class="meta-pill"><i class="ti ti-files" aria-hidden="true"></i> ~1.250 fontes documentais</span>
+      <span class="meta-pill"><i class="ti ti-clock" aria-hidden="true"></i> Meta: 12 min → &lt; 2 min</span>
+    </div>
+  </div>
+
+  <!-- 1. Viabilidade -->
+  <div>
+    <div class="section-label">Seção 1</div>
+    <div class="section-title">Avaliação de Viabilidade</div>
+
+    <div class="gauge-wrap">
+      <div>
+        <div style="font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:4px">Viabilidade técnica geral</div>
+        <div class="gauge-score">72 / 100</div>
+      </div>
+      <div class="gauge-track"><div class="gauge-fill"></div></div>
+      <div class="gauge-label">Viável com<br>ressalvas críticas</div>
+    </div>
+
+    <div class="viab-grid">
+      <div class="viab-card">
+        <div class="viab-card-title"><span class="dot dot-green"></span> Fatores favoráveis</div>
+        <div class="viab-item"><i class="ti ti-check" style="color:#639922"></i><span>Licenças M365 E3 já incluem SharePoint e Teams — base para ingestão e interface sem custo adicional de infraestrutura</span></div>
+        <div class="viab-item"><i class="ti ti-check" style="color:#639922"></i><span>Azure AI Search + Azure OpenAI formam stack RAG nativo, reduzindo fricção de integração e garantindo SLA</span></div>
+        <div class="viab-item"><i class="ti ti-check" style="color:#639922"></i><span>Domínio de conhecimento bem delimitado (frete, SLA, devolução) — vocabulário controlado favorece retrieval semântico preciso</span></div>
+        <div class="viab-item"><i class="ti ti-check" style="color:#639922"></i><span>Redução de 12 → 2 min é factível: experimentos internos da DB1 com domínios similares atingem média de 90 segundos por consulta</span></div>
+        <div class="viab-item"><i class="ti ti-check" style="color:#639922"></i><span>Volume de ~1.250 documentos é gerenciável em um índice único com particionamento por domínio</span></div>
+      </div>
+      <div class="viab-card">
+        <div class="viab-card-title"><span class="dot dot-amber"></span> Fatores de risco técnico</div>
+        <div class="viab-item"><i class="ti ti-alert-triangle" style="color:#BA7517"></i><span>Versões conflitantes (ex.: PROC-042 v1 vs v2) sem hierarquia formal no SharePoint — o pipeline pode recuperar a versão errada sem aviso</span></div>
+        <div class="viab-item"><i class="ti ti-alert-triangle" style="color:#BA7517"></i><span>FAQ informal não validado pelo Compliance coexiste com políticas normativas — distinção de confiabilidade da fonte é crítica</span></div>
+        <div class="viab-item"><i class="ti ti-alert-triangle" style="color:#BA7517"></i><span>Documentos sem responsável único de governança — atualizações assíncronas geram drift entre o índice vetorial e a realidade operacional</span></div>
+        <div class="viab-item"><i class="ti ti-alert-triangle" style="color:#BA7517"></i><span>Alguns procedimentos (ex.: carga danificada, seguro) existem apenas em FAQs sem respaldo normativo — lacuna de cobertura formal</span></div>
+        <div class="viab-item"><i class="ti ti-alert-triangle" style="color:#BA7517"></i><span>3 meses é um prazo curto para ingestão, curadoria, fine-tuning do prompt e testes de aceitação com usuários reais</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px" class="verdict-box">
+      <p><strong style="color:var(--color-text-primary)">Veredito técnico:</strong> A arquitetura RAG sobre Azure AI Search + Azure OpenAI é a escolha correta para esse cenário. A viabilidade técnica da stack é alta; o risco real está na qualidade e governança dos documentos-fonte. Um sistema RAG é tão confiável quanto sua base de conhecimento — e a NovaTech apresenta lacunas estruturais nessa frente que precisam ser endereçadas antes ou em paralelo ao desenvolvimento.</p>
+    </div>
+  </div>
+
+  <!-- 2. Mapa de Riscos -->
+  <div>
+    <div class="section-label">Seção 2</div>
+    <div class="section-title">Mapa de Riscos</div>
+    <p style="font-size:var(--fss);color:var(--color-text-secondary);margin-bottom:12px">Clique em qualquer risco para expandir a estratégia de mitigação detalhada.</p>
+
+    <div class="risk-filters">
+      <button class="rf-btn active" onclick="filterRisks('todos',this)">Todos os riscos</button>
+      <button class="rf-btn" onclick="filterRisks('Alta',this)">Alta probabilidade</button>
+      <button class="rf-btn" onclick="filterRisks('Média',this)">Média probabilidade</button>
+      <button class="rf-btn" onclick="filterRisks('Baixa',this)">Baixa probabilidade</button>
+    </div>
+
+    <table class="risk-table" id="risk-table">
+      <thead>
+        <tr>
+          <th style="width:30%">Risco</th>
+          <th style="width:10%">Prob.</th>
+          <th style="width:22%">Impacto</th>
+          <th style="width:38%">Mitigação (resumo)</th>
+        </tr>
+      </thead>
+      <tbody id="risk-body"></tbody>
+    </table>
+  </div>
+
+  <!-- 3. Questões Tech Lead -->
+  <div>
+    <div class="section-label">Seção 3</div>
+    <div class="section-title">Questões para Validação Técnica</div>
+    <p style="font-size:var(--fss);color:var(--color-text-secondary);margin-bottom:14px">Respostas necessárias pelo Tech Lead antes da aprovação definitiva do cronograma.</p>
+    <div class="q-list" id="q-list"></div>
+  </div>
+
+  <!-- 4. Conclusão -->
+  <div>
+    <div class="section-label">Seção 4</div>
+    <div class="section-title">Conclusão Executiva</div>
+    <div class="conclusion-grid">
+      <div class="concl-card">
+        <div class="concl-icon"><i class="ti ti-check-circle" style="color:#639922;font-size:20px" aria-hidden="true"></i></div>
+        <div class="concl-label">Viabilidade</div>
+        <div class="concl-val">Recomendado</div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">com condições prévias</div>
+      </div>
+      <div class="concl-card">
+        <div class="concl-icon"><i class="ti ti-calendar-check" style="color:#BA7517;font-size:20px" aria-hidden="true"></i></div>
+        <div class="concl-label">Prazo</div>
+        <div class="concl-val">3 meses</div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">apertado — exige fase 0 de governança</div>
+      </div>
+      <div class="concl-card">
+        <div class="concl-icon"><i class="ti ti-clock" style="color:#185FA5;font-size:20px" aria-hidden="true"></i></div>
+        <div class="concl-label">ROI esperado</div>
+        <div class="concl-val">≥ 80% redução</div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">no tempo de busca por chamado</div>
+      </div>
+    </div>
+    <div class="rec-box">
+      <p><strong>Recomendação final:</strong> O projeto é viável e estrategicamente relevante, mas sua aprovação deve ser condicionada a três ações pré-desenvolvimento. <strong>Primeiro</strong>, estabelecer um processo formal de governança documental com responsáveis por domínio (Operações, Comercial, Compliance) antes de iniciar a ingestão — documentos conflitantes alimentados no índice vão gerar respostas contraditórias desde o dia 1. <strong>Segundo</strong>, incluir uma sprint de "document triage" (aprox. 3 semanas) no cronograma para catalogar, versionar e marcar a confiabilidade de cada fonte. <strong>Terceiro</strong>, definir métricas de aceitação quantitativas (precision@3, taxa de hallucination, CSAT do atendente) antes do desenvolvimento — sem critérios claros de sucesso, o projeto não tem condição objetiva de encerramento. Cumpridas essas condições, a DB1 tem capacidade técnica e stack disponível para entregar o MVP dentro de 3 meses com alto grau de confiança.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const RISKS = [
+  {
+    name:"Alucinação do modelo",
+    prob:"Alta",
+    desc:"LLMs podem gerar informações plausíveis mas incorretas, especialmente quando os chunks recuperados não cobrem a pergunta. Na NovaTech, perguntas sobre frete padrão (<500kg) não têm documento formal — o modelo pode inventar multiplicadores.",
+    impacto:["Qualidade","Confiança"],
+    mit:"Configurar temperatura próxima de 0 para domínio factual. Obrigar o modelo a citar o chunk-fonte em toda resposta. Implementar fallback explícito: 'Não encontrei esta informação na documentação' ao invés de gerar conteúdo.",
+    detail:"Exemplos reais identificados na base da NovaTech: (1) pergunta sobre frete <500kg — nenhum chunk cobre, risco de invenção de valores; (2) pergunta sobre Tier Platinum — a base diz explicitamente que não existe, mas um modelo mal-instruído pode criar SLAs fictícios. Mitigação adicional: log de toda consulta sem chunk relevante para revisão humana semanal."
+  },
+  {
+    name:"Documentos contraditórios no retrieval",
+    prob:"Alta",
+    desc:"PROC-042 v1 e v2 coexistem no SharePoint sem hierarquia formal. O Azure AI Search pode retornar chunks de ambas as versões na mesma consulta, gerando mistura de multiplicadores antigos e novos na resposta.",
+    impacto:["Qualidade","Prazo","Custo"],
+    mit:"Implementar campo de metadado 'versao_vigente' (boolean) em cada chunk. Filtrar o retrieval para excluir documentos marcados como obsoletos. Adicionar etapa de resolução de conflito no prompt: 'Se chunks de versões diferentes forem recuperados, use sempre o mais recente e informe o atendente.'",
+    detail:"Situação atual documentada: PROC-042 v1 (multiplicador Norte = 1.6) vs v2 (Norte = 1.8) — diferença de 12,5% no cálculo. Um atendente que usa o valor errado pode cotar frete abaixo do custo para o cliente. A PROC-042 v2 tem disposições transitórias (chamados antes de 01/12/2023 usam v1), adicionando uma camada de lógica que o RAG puro não resolve — necessita de regra no prompt ou pré-processamento."
+  },
+  {
+    name:"FAQ como fonte não-confiável",
+    prob:"Alta",
+    desc:"O FAQ-Atendimento é um documento informal, sem validação de Compliance, com respostas que refletem práticas de atendentes mas podem contradizer políticas formais. Se o pipeline der peso igual ao FAQ e às políticas POL, o assistente usará fontes de confiabilidade muito diferente sem distinção.",
+    impacto:["Qualidade","Conformidade"],
+    mit:"Criar camada de metadados de confiabilidade: 'normativo' (POL, PROC, SLA), 'informal' (FAQ, notas internas). No prompt, instruir o modelo a priorizar fontes normativas e indicar explicitamente quando usa informação de fonte informal.",
+    detail:"Exemplo concreto: FAQ-03 diz 'já tiveram casos em que Gestão de Riscos autorizou exceção' para carga perigosa. POL-001-B diz explicitamente que NÃO é elegível. Se o modelo mistura os dois, pode passar mensagem errada ao cliente sobre possibilidade de devolução de carga perigosa — risco legal e de compliance operacional."
+  },
+  {
+    name:"Desatualização silenciosa da base",
+    prob:"Alta",
+    desc:"Sem processo de governança, documentos são atualizados em diferentes áreas (Comercial atualiza PROC, Operações atualiza SLA, Jurídico atualiza POL) sem notificar o pipeline de RAG. O índice vetorial fica desatualizado de forma invisível.",
+    impacto:["Qualidade","Confiança"],
+    mit:"Implementar conector de sincronização automática com SharePoint/Confluence via Microsoft Graph API — novos documentos disparam re-ingestão incremental. Adicionar campo 'data_ingestao' e 'data_modificacao_doc' em cada chunk para o modelo poder informar 'esta informação é de jan/2024'.",
+    detail:"Cenário de risco: a PROC-043 (Frete de Cargas Perigosas) está 'em processo de revisão pelo Compliance' (mencionado na PROC-042 v2). Quando for publicada, sem sincronização automática, o assistente continuará usando a versão anterior indefinidamente. Recomendação: webhook no SharePoint que aciona re-ingestão ao detectar modificação em arquivos do escopo."
+  },
+  {
+    name:"Context rot — degradação por contexto longo",
+    prob:"Média",
+    desc:"Com 1.250 fontes e chunks múltiplos por consulta, o contexto enviado ao LLM pode superar os limites ideais. Modelos GPT-4 têm tendência a ignorar informações do meio do contexto ('lost in the middle'), gerando respostas que omitem regras importantes.",
+    impacto:["Qualidade"],
+    mit:"Limitar o retrieval a 3-5 chunks por consulta com re-ranking por relevância (cross-encoder). Usar compressão de contexto: resumir chunks longos antes de incluir no prompt. Monitorar respostas truncadas ou que ignoram partes do contexto via avaliação automática com LLM-as-judge.",
+    detail:"Exemplo: uma consulta multi-domínio ('qual o prazo de devolução + SLA + frete especial para cliente Gold com carga perigosa?') pode recuperar 8-10 chunks. Se incluídos todos, o modelo tende a omitir a regra de exceção para carga perigosa (POL-001-B) que está no meio do contexto. Estratégia adicional: mapear consultas multi-domínio esperadas e criar prompts compostos que fazem retrieval separado por domínio."
+  },
+  {
+    name:"Expectativas irreais da diretoria",
+    prob:"Média",
+    desc:"A diretoria espera '<2 minutos' como meta absoluta. RAG não substitui julgamento humano em casos de exceção, disputas contratuais ou situações sem cobertura documental — ~30% dos chamados atuais podem ainda exigir escalada manual.",
+    impacto:["Prazo","Custo","Expectativa"],
+    mit:"Calibrar expectativas no kickoff: o assistente resolve autonomamente casos simples/documentados; casos de exceção recebem um draft de resposta para o atendente validar. Apresentar duas métricas: 'tempo médio total' (meta <2min) e 'taxa de resolução autônoma' (meta >60% no MVP).",
+    detail:"Risco de projeto: se a diretoria perceber que ~40% dos chamados ainda passam pelo atendente (mas agora em 45s ao invés de 12 min), pode considerar o projeto como fracasso — mesmo que o ROI seja positivo. Ação preventiva: construir dashboard de métricas visível à diretoria desde a semana 1 de produção, mostrando evolução incremental da taxa de automação."
+  },
+  {
+    name:"Governança de versionamento documental",
+    prob:"Alta",
+    desc:"Não existe processo único de governança documental na NovaTech. Áreas diferentes publicam sem controle de versão, sem deprecação formal, sem responsável único. Isso afeta o RAG de forma estrutural — não é um bug corrigível no código.",
+    impacto:["Prazo","Qualidade","Confiança"],
+    mit:"Pré-requisito não-técnico: estabelecer um 'Comitê de Conhecimento' com representantes de Operações, Comercial e Compliance. Criar template padrão de documento com campos obrigatórios: versão, responsável, data de validade, status (vigente/obsoleto/em-revisão). O pipeline de ingestão deve rejeitar documentos sem esses metadados.",
+    detail:"Este é o risco com maior impacto sistêmico. Um RAG bem construído sobre documentação mal governada produzirá respostas inconsistentes de forma recorrente — e o custo de corrigir isso em produção é alto. Recomendação DB1: condicionar o início da fase de desenvolvimento à existência de pelo menos uma versão preliminar do processo de governança documental aprovado pela diretoria."
+  },
+  {
+    name:"Baixa qualidade do retrieval (recall/precision)",
+    prob:"Média",
+    desc:"Perguntas ambíguas ou com vocabulário diferente do documento podem não recuperar os chunks corretos. Um atendente que pergunta 'quanto demora pra buscar a mercadoria de volta?' pode não recuperar o chunk sobre 'coleta reversa'.",
+    impacto:["Qualidade","Adoção"],
+    mit:"Implementar query expansion: gerar sinônimos e reformulações da pergunta antes do retrieval. Criar glossário de termos operacionais da NovaTech para enriquecer os embeddings. Definir métricas de retrieval (recall@5 > 0.85) e medir semanalmente com conjunto de perguntas de ouro (golden dataset).",
+    detail:"Criação do golden dataset: mapear as 50 perguntas mais frequentes do time de atendimento atual, com os documentos corretos para cada uma. Usar esse conjunto para medir recall e precision do retrieval a cada deploy. Se recall cair abaixo de 0.80, travar o deploy e investigar antes de colocar em produção."
+  }
+];
+
+const QUESTIONS = [
+  {
+    title:"Como será feita a distinção entre documentos vigentes e obsoletos no pipeline de ingestão?",
+    text:"Existe hoje algum campo nos documentos do SharePoint que indica status de vigência (ativo/obsoleto/em revisão)? Se não, qual o processo para criá-lo antes do início da ingestão? Como o pipeline vai tratar dois documentos com o mesmo título e versões diferentes — qual critério de desempate?",
+    tag:"Ingestão · Versionamento"
+  },
+  {
+    title:"Qual será a estratégia de chunking e qual o tamanho ideal de chunk para os documentos da NovaTech?",
+    text:"Os documentos têm estruturas muito diferentes: POL-001 tem seções normativas com lógica condicional; FAQ é informal e narrativo; tabelas SLA são estruturadas. Um único tamanho de chunk não serve para todos os formatos. Qual estratégia de chunking adaptativo por tipo de documento está planejada? Como será tratado o chunking de tabelas (SLA, multiplicadores regionais) para preservar a semântica da linha inteira?",
+    tag:"Chunking · Qualidade do Retrieval"
+  },
+  {
+    title:"Como o sistema vai lidar com perguntas cujas respostas dependem de lógica condicional entre múltiplos documentos?",
+    text:"Exemplo real da base: 'Qual multiplicador usar para frete de chamado aberto em novembro/2023?' exige entender as disposições transitórias da PROC-042 v2 (que menciona 01/12/2023 como data de corte). RAG puro retorna o chunk da regra, mas não executa a lógica. Será implementado um camada de raciocínio (chain-of-thought, tool use) para resolver esses casos? Ou o escopo do MVP excluirá perguntas que requerem raciocínio multi-documento?",
+    tag:"Lógica Condicional · Arquitetura"
+  },
+  {
+    title:"Quais são os critérios de qualidade e métricas de aceitação para o go-live?",
+    text:"Sem métricas objetivas, não há como declarar o MVP pronto. Quais são os thresholds mínimos acordados com o cliente para: taxa de hallucination aceitável, recall@5 do retrieval, CSAT do atendente, tempo médio de resposta, percentual de consultas com citação de fonte válida? Como será realizada a avaliação contínua em produção?",
+    tag:"Qualidade · Métricas · Go-Live"
+  },
+  {
+    title:"Como será tratada a atualização incremental da base de conhecimento sem downtime do assistente?",
+    text:"Documentos serão atualizados com frequência. A re-ingestão completa do índice leva tempo e pode causar janela de instabilidade. Está planejado um pipeline de ingestão incremental (apenas documentos novos/modificados)? Como será garantido que um documento obsoleto seja removido do índice quando a versão nova for publicada? Qual o SLA de propagação de uma atualização documental para o assistente?",
+    tag:"Atualização · Operação"
+  },
+  {
+    title:"Como será feita a rastreabilidade das respostas para fins de auditoria e melhoria contínua?",
+    text:"Em um contexto logístico com implicações contratuais (SLAs, multas, valores de frete), o atendente precisa poder auditar de onde veio cada resposta. O sistema vai registrar: qual pergunta foi feita, quais chunks foram recuperados, qual foi o score de relevância de cada chunk, e qual foi a resposta gerada? Esse log estará disponível para o time de Compliance e Operações?",
+    tag:"Rastreabilidade · Auditoria"
+  }
+];
+
+function renderRisks(filter){
+  const tbody = document.getElementById('risk-body');
+  tbody.innerHTML='';
+  RISKS.filter(r=> filter==='todos'||r.prob===filter).forEach((r,i)=>{
+    const cls = r.prob==='Alta'?'p-alta':r.prob==='Média'?'p-media':'p-baixa';
+    const chips = r.impacto.map(x=>`<span class="impact-chip">${x}</span>`).join('');
+    const pid=`ep-${i}`;
+    const row = document.createElement('tr');
+    row.className='risk-row';
+    row.setAttribute('data-prob',r.prob);
+    row.innerHTML=`
+      <td>
+        <div class="risk-name">${r.name}</div>
+        <div class="risk-desc" style="font-size:11px">${r.desc.substring(0,90)}…</div>
+      </td>
+      <td><span class="pill ${cls}">${r.prob}</span></td>
+      <td><div class="impact-row">${chips}</div></td>
+      <td style="font-size:11px;color:var(--color-text-secondary)">${r.mit.substring(0,100)}… <span style="color:var(--color-text-info);cursor:pointer" onclick="toggleExp('${pid}')">ver mais ↓</span></td>
+    `;
+    const detRow = document.createElement('tr');
+    detRow.innerHTML=`<td colspan="4" style="padding:0 10px"><div class="expand-panel" id="${pid}"><strong>Mitigação completa:</strong> ${r.mit}<br><br><strong>Contexto NovaTech:</strong> ${r.detail}</div></td>`;
+    tbody.appendChild(row);
+    tbody.appendChild(detRow);
+    row.addEventListener('click',()=>toggleExp(pid));
+  });
+}
+
+function toggleExp(id){
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function filterRisks(f, btn){
+  document.querySelectorAll('.rf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRisks(f);
+}
+
+function renderQuestions(){
+  const container = document.getElementById('q-list');
+  QUESTIONS.forEach((q,i)=>{
+    const card = document.createElement('div');
+    card.className='q-card';
+    card.innerHTML=`
+      <div class="q-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="q-body">
+        <div class="q-title">${q.title}</div>
+        <div class="q-text">${q.text}</div>
+        <span class="q-tag"><i class="ti ti-tag" aria-hidden="true"></i> ${q.tag}</span>
+      </div>
+    `;
+    card.addEventListener('click',()=>sendPrompt(`Me explica mais sobre a questão ${i+1} para o Tech Lead: "${q.title}"`));
+    container.appendChild(card);
+  });
+}
+
+renderRisks('todos');
+renderQuestions();
+</script>
