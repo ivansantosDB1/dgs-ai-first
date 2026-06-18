@@ -1,0 +1,99 @@
+<svg viewBox="0 0 1180 460" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <text x="590" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#1a1a2e">Workflow AI First — NovaTech Assistant</text>
+  <text x="590" y="56" text-anchor="middle" font-size="13" fill="#666">IA gera · humano valida — 6 etapas, 4 validation gates</text>
+
+  <!-- Etapas -->
+  <!-- x positions: 40,230,420,610,800,990 (width 150) -->
+  <g>
+    <!-- SPEC -->
+    <rect x="40" y="100" width="150" height="92" rx="10" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+    <text x="115" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#1a73e8">SPEC</text>
+    <text x="115" y="150" text-anchor="middle" font-size="12" fill="#333">Product Specialist</text>
+    <text x="115" y="170" text-anchor="middle" font-size="11" fill="#777">Cowork + Design</text>
+
+    <!-- PLAN -->
+    <rect x="230" y="100" width="150" height="92" rx="10" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+    <text x="305" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#188038">PLAN</text>
+    <text x="305" y="150" text-anchor="middle" font-size="12" fill="#333">Tech Lead</text>
+    <text x="305" y="170" text-anchor="middle" font-size="11" fill="#777">Copilot + Claude</text>
+
+    <!-- TASKS -->
+    <rect x="420" y="100" width="150" height="92" rx="10" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+    <text x="495" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#188038">TASKS</text>
+    <text x="495" y="150" text-anchor="middle" font-size="12" fill="#333">Devs (pleno+sênior)</text>
+    <text x="495" y="170" text-anchor="middle" font-size="11" fill="#777">Copilot</text>
+
+    <!-- IMPLEMENT -->
+    <rect x="610" y="100" width="150" height="92" rx="10" fill="#fef7e0" stroke="#f9ab00" stroke-width="2"/>
+    <text x="685" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#e37400">IMPLEMENT</text>
+    <text x="685" y="150" text-anchor="middle" font-size="12" fill="#333">Devs</text>
+    <text x="685" y="170" text-anchor="middle" font-size="11" fill="#777">Copilot</text>
+
+    <!-- REVIEW -->
+    <rect x="800" y="100" width="150" height="92" rx="10" fill="#fce8e6" stroke="#ea4335" stroke-width="2"/>
+    <text x="875" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#c5221f">REVIEW</text>
+    <text x="875" y="150" text-anchor="middle" font-size="12" fill="#333">Tech Lead + QA</text>
+    <text x="875" y="170" text-anchor="middle" font-size="11" fill="#777">Copilot + Cowork</text>
+
+    <!-- DEPLOY -->
+    <rect x="990" y="100" width="150" height="92" rx="10" fill="#f3e8fd" stroke="#a142f4" stroke-width="2"/>
+    <text x="1065" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#8430ce">DEPLOY</text>
+    <text x="1065" y="150" text-anchor="middle" font-size="12" fill="#333">DM + Tech Lead</text>
+    <text x="1065" y="170" text-anchor="middle" font-size="11" fill="#777">Cowork + CI/CD</text>
+  </g>
+
+  <!-- Arrows between stages -->
+  <line x1="190" y1="146" x2="226" y2="146" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="380" y1="146" x2="416" y2="146" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="570" y1="146" x2="606" y2="146" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="760" y1="146" x2="796" y2="146" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="950" y1="146" x2="986" y2="146" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Gates -->
+  <!-- Gate 1: Spec->Plan @ x=210 -->
+  <circle cx="210" cy="146" r="15" fill="#fff" stroke="#1a73e8" stroke-width="2.5"/>
+  <text x="210" y="151" text-anchor="middle" font-size="12" font-weight="700" fill="#1a73e8">G1</text>
+  <!-- Gate 2: Tasks->Implement @ x=590 -->
+  <circle cx="590" cy="146" r="15" fill="#fff" stroke="#e37400" stroke-width="2.5"/>
+  <text x="590" y="151" text-anchor="middle" font-size="12" font-weight="700" fill="#e37400">G2</text>
+  <!-- Gate 3: code->merge @ x=780 (Review entry) -->
+  <circle cx="780" cy="146" r="15" fill="#fff" stroke="#c5221f" stroke-width="2.5"/>
+  <text x="780" y="151" text-anchor="middle" font-size="12" font-weight="700" fill="#c5221f">G3</text>
+  <!-- Gate 4: tests->deploy @ x=970 -->
+  <circle cx="970" cy="146" r="15" fill="#fff" stroke="#8430ce" stroke-width="2.5"/>
+  <text x="970" y="151" text-anchor="middle" font-size="12" font-weight="700" fill="#8430ce">G4</text>
+
+  <!-- Gate legend -->
+  <g font-size="12.5" fill="#333">
+    <rect x="40" y="250" width="1100" height="170" rx="10" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <text x="60" y="278" font-size="14" font-weight="700" fill="#1a1a2e">Validation Gates (humano valida antes de avançar)</text>
+
+    <circle cx="70" cy="306" r="11" fill="#fff" stroke="#1a73e8" stroke-width="2"/>
+    <text x="70" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#1a73e8">G1</text>
+    <text x="92" y="310" font-weight="600">Spec → Plan</text>
+    <text x="92" y="326" fill="#666">Aprova: Tech Lead · verifica critérios de aceite verificáveis por requisito</text>
+
+    <circle cx="70" cy="350" r="11" fill="#fff" stroke="#e37400" stroke-width="2"/>
+    <text x="70" y="354" text-anchor="middle" font-size="10" font-weight="700" fill="#e37400">G2</text>
+    <text x="92" y="354" font-weight="600">Tasks (IA) → Implement</text>
+    <text x="92" y="370" fill="#666">Aprova: Tech Lead · verifica que tasks são atômicas e fazem sentido</text>
+
+    <circle cx="600" cy="306" r="11" fill="#fff" stroke="#c5221f" stroke-width="2"/>
+    <text x="600" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#c5221f">G3</text>
+    <text x="622" y="310" font-weight="600">Código (agente) → Merge</text>
+    <text x="622" y="326" fill="#666">Aprova: Tech Lead + peer · code review do output do Copilot</text>
+
+    <circle cx="600" cy="350" r="11" fill="#fff" stroke="#8430ce" stroke-width="2"/>
+    <text x="600" y="354" text-anchor="middle" font-size="10" font-weight="700" fill="#8430ce">G4</text>
+    <text x="622" y="354" font-weight="600">Testes (IA) → Deploy</text>
+    <text x="622" y="370" fill="#666">Aprova: QA · valida que a suite cobre os cenários de falha</text>
+
+    <text x="60" y="404" font-size="11.5" fill="#888" font-style="italic">Gates proporcionais ao risco: G3 (merge na main) e G4 (deploy) são os mais rígidos; Plan→Tasks não tem gate (baixo risco, reversível).</text>
+  </g>
+</svg>

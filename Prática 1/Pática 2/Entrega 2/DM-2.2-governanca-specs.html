@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Governança de Specs SDD — NovaTech Assistant · DB1 Global Software</title>
+<style>
+  :root{
+    --db1-orange:#FF5000;        /* laranja institucional DB1 */
+    --db1-orange-soft:#FFF1EB;
+    --ink:#16181D;
+    --ink-soft:#3A3F4A;
+    --line:#E4E6EB;
+    --paper:#FFFFFF;
+    --bg:#F6F7F9;
+    --ok:#1E7D52;
+    --warn:#B25E00;
+    --crit:#C0362C;
+    --shadow:0 1px 3px rgba(20,24,29,.08),0 8px 24px rgba(20,24,29,.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:16px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  h1,h2,h3{line-height:1.2;font-weight:700;letter-spacing:-.01em;}
+  a{color:var(--db1-orange);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  /* ---------- CAPA ---------- */
+  .cover{
+    background:linear-gradient(135deg,#1A1C22 0%,#23262F 60%,#2C2030 100%);
+    color:#fff;padding:0;position:relative;overflow:hidden;
+  }
+  .cover::after{
+    content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;
+    background:radial-gradient(circle,rgba(255,80,0,.35),transparent 70%);
+  }
+  .cover .wrap{padding:64px 28px 72px;position:relative;z-index:1;}
+  .brandbar{display:flex;align-items:center;gap:14px;margin-bottom:54px;}
+  .brandbar img{height:34px;display:block;}
+  .brandbar .div{width:1px;height:26px;background:rgba(255,255,255,.25);}
+  .brandbar span{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+  .eyebrow{
+    display:inline-block;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--db1-orange);font-weight:700;margin-bottom:20px;
+    border:1px solid rgba(255,80,0,.4);padding:6px 14px;border-radius:100px;
+  }
+  .cover h1{font-size:2.9rem;margin:0 0 16px;max-width:18ch;}
+  .cover .sub{font-size:1.12rem;color:rgba(255,255,255,.82);max-width:60ch;margin:0 0 40px;}
+  .cover .meta{display:flex;flex-wrap:wrap;gap:36px;padding-top:28px;border-top:1px solid rgba(255,255,255,.15);}
+  .cover .meta div span{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:4px;}
+  .cover .meta div strong{font-size:1rem;font-weight:600;}
+
+  /* ---------- SUMÁRIO ---------- */
+  .toc{background:var(--paper);border-bottom:1px solid var(--line);}
+  .toc .wrap{padding:26px 28px;}
+  .toc h2{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 16px;}
+  .toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 28px;counter-reset:t;}
+  .toc li{counter-increment:t;font-size:.95rem;}
+  .toc li a{color:var(--ink-soft);display:flex;gap:12px;align-items:baseline;}
+  .toc li a::before{content:counter(t,decimal-leading-zero);color:var(--db1-orange);font-weight:700;font-variant-numeric:tabular-nums;font-size:.85rem;}
+  .toc li a:hover{color:var(--db1-orange);text-decoration:none;}
+
+  /* ---------- SEÇÕES ---------- */
+  section{padding:56px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;}
+  .sec-num{font-size:.85rem;font-weight:700;color:var(--db1-orange);font-variant-numeric:tabular-nums;letter-spacing:.1em;}
+  section h2{font-size:1.7rem;margin:0;}
+  .lead{color:var(--ink-soft);max-width:72ch;margin:12px 0 28px;}
+  h3{font-size:1.15rem;margin:34px 0 12px;}
+  p{margin:0 0 14px;}
+  .note{background:var(--db1-orange-soft);border-left:3px solid var(--db1-orange);padding:14px 18px;border-radius:0 8px 8px 0;font-size:.92rem;color:var(--ink-soft);margin:18px 0;}
+
+  /* ---------- TABELAS ---------- */
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);margin:18px 0;}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:560px;}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:#1A1C22;color:#fff;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;position:sticky;top:0;}
+  tbody tr:nth-child(even){background:#FAFBFC;}
+  tbody tr:hover{background:var(--db1-orange-soft);}
+  .raci td:first-child{font-weight:600;}
+  .r{color:var(--db1-orange);font-weight:700;text-align:center;}
+  .a{color:var(--crit);font-weight:700;text-align:center;}
+  .c{color:var(--ink-soft);text-align:center;}
+  .i{color:#9AA0AB;text-align:center;}
+  .dash{color:#C8CCD3;text-align:center;}
+
+  /* status pills */
+  .pill{display:inline-block;padding:3px 10px;border-radius:100px;font-size:.74rem;font-weight:600;white-space:nowrap;}
+  .st-rasc{background:#EEF0F3;color:#5A6170;}
+  .st-rev{background:#FFF1EB;color:#B25E00;}
+  .st-apr{background:#E7F4EE;color:#1E7D52;}
+  .st-impl{background:#E8EFFD;color:#2257C6;}
+  .st-val{background:#EDE7F6;color:#6B3FA0;}
+
+  /* ---------- FLUXO SDD ---------- */
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin:24px 0 8px;}
+  .flow .node{flex:1;min-width:130px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow);}
+  .flow .node .art{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;color:var(--db1-orange);font-weight:600;}
+  .flow .node .nm{font-weight:700;margin:6px 0 2px;}
+  .flow .node .who{font-size:.78rem;color:var(--ink-soft);}
+  .flow .gate{display:flex;align-items:center;justify-content:center;min-width:46px;color:var(--crit);font-weight:700;font-size:.78rem;}
+  .flow .gate::before{content:"▸ gate ▸";white-space:nowrap;}
+
+  /* ---------- CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow);border-top:3px solid var(--db1-orange);}
+  .card h4{margin:0 0 8px;font-size:1rem;}
+  .card .kv{font-size:.84rem;color:var(--ink-soft);margin:4px 0;}
+  .card .kv b{color:var(--ink);}
+
+  .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0;}
+  .metric{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
+  .metric h4{margin:0 0 6px;font-size:.98rem;}
+  .metric p{font-size:.85rem;color:var(--ink-soft);margin:0;}
+
+  pre{background:#1A1C22;color:#E6E8EC;padding:20px;border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.55;font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .repo-comment{color:#7C8696;}
+  .repo-spec{color:#FF8B4D;}
+
+  /* ---------- RODAPÉ ---------- */
+  footer{background:#1A1C22;color:rgba(255,255,255,.7);padding:40px 0;}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:center;}
+  footer img{height:28px;opacity:.95;}
+  footer .meta{font-size:.82rem;text-align:right;line-height:1.5;}
+  footer .meta strong{color:#fff;display:block;}
+
+  @media (max-width:680px){
+    .cover h1{font-size:2.1rem;}
+    .flow .gate{min-width:100%;height:24px;}
+    .flow .gate::before{content:"▾ gate ▾";}
+  }
+  @media print{
+    body{background:#fff;}
+    section{break-inside:avoid;}
+    .cover{background:#1A1C22 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandbar">
+      <img src="https://www.db1group.com/wp-content/uploads/2021/03/logo-db1-group.svg" alt="DB1 Global Software"
+           onerror="this.onerror=null;this.src='https://db1.com.br/wp-content/themes/db1/assets/img/logo.svg';this.onerror=function(){this.style.display='none';this.insertAdjacentHTML('afterend','<span style=&quot;font-weight:700;color:#fff;font-size:1.1rem&quot;>DB1 Global Software</span>');}">
+      <span class="div"></span>
+      <span>Engineering Standards</span>
+    </div>
+    <span class="eyebrow">Padrão de Governança · SDD</span>
+    <h1>Governança de Specs no modelo Spec Driven Development</h1>
+    <p class="sub">Framework oficial para criação, aprovação, versionamento e rastreabilidade de specs como contratos executáveis no projeto NovaTech Assistant.</p>
+    <div class="meta">
+      <div><span>Projeto</span><strong>NovaTech Assistant</strong></div>
+      <div><span>Repositório</span><strong>db1/novatech-assistant</strong></div>
+      <div><span>Autor</span><strong>Ivan Ramos dos Santos</strong></div>
+      <div><span>Função</span><strong>Gerente de Projetos</strong></div>
+      <div><span>Organização</span><strong>DB1 Global Software</strong></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SUMÁRIO ===== -->
+<nav class="toc">
+  <div class="wrap">
+    <h2>Sumário</h2>
+    <ol>
+      <li><a href="#raci">Papéis e Responsabilidades (RACI)</a></li>
+      <li><a href="#sdd">Fluxo SDD</a></li>
+      <li><a href="#repo">Estrutura do Repositório</a></li>
+      <li><a href="#gov">Modelo de Governança</a></li>
+      <li><a href="#board">Board de Tracking</a></li>
+      <li><a href="#change">Change Management</a></li>
+      <li><a href="#kpi">Indicadores de Governança</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- 1. RACI -->
+  <section id="raci">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Papéis e Responsabilidades</h2></div>
+    <p class="lead">No SDD, a spec é um contrato executável. Agentes de IA <strong>geram rascunhos</strong>; a aprovação de cada transição é sempre humana. O Tech Lead é o aprovador único das transições técnicas para evitar aprovação difusa.</p>
+    <div class="tbl-scroll">
+      <table class="raci">
+        <thead><tr>
+          <th>Atividade</th><th>Product Specialist</th><th>Delivery Manager</th><th>Tech Lead</th><th>Desenvolvedor</th><th>QA</th><th>Agentes IA</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Criar Requirements</td><td class="r">R</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="r">R</td></tr>
+          <tr><td>Revisar Requirements</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="r">R</td><td class="dash">—</td></tr>
+          <tr><td>Aprovar Requirements</td><td class="c">C</td><td class="i">I</td><td class="a">A</td><td class="i">I</td><td class="c">C</td><td class="dash">—</td></tr>
+          <tr><td>Criar Plan</td><td class="c">C</td><td class="i">I</td><td class="r">R</td><td class="c">C</td><td class="c">C</td><td class="r">R</td></tr>
+          <tr><td>Revisar Plan</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="r">R</td><td class="c">C</td><td class="dash">—</td></tr>
+          <tr><td>Aprovar Plan</td><td class="i">I</td><td class="i">I</td><td class="a">A</td><td class="i">I</td><td class="i">I</td><td class="dash">—</td></tr>
+          <tr><td>Criar Tasks</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="r">R</td><td class="i">I</td><td class="r">R</td></tr>
+          <tr><td>Revisar Tasks</td><td class="i">I</td><td class="i">I</td><td class="r">R</td><td class="c">C</td><td class="i">I</td><td class="dash">—</td></tr>
+          <tr><td>Aprovar Tasks</td><td class="i">I</td><td class="c">C</td><td class="a">A</td><td class="i">I</td><td class="i">I</td><td class="dash">—</td></tr>
+          <tr><td>Governar o processo</td><td class="i">I</td><td class="a">R/A</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="dash">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.84rem;color:var(--ink-soft)"><strong>R</strong> Responsável · <strong style="color:var(--crit)">A</strong> Aprova (único) · <strong>C</strong> Consultado · <strong>I</strong> Informado</p>
+  </section>
+
+  <!-- 2. FLUXO SDD -->
+  <section id="sdd">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Fluxo SDD</h2></div>
+    <p class="lead">Cada transição entre artefatos é um checkpoint humano (validation gate). Os três artefatos por módulo encadeiam o QUE, o COMO e a decomposição executável.</p>
+    <div class="flow">
+      <div class="node"><div class="art">requirements.md</div><div class="nm">Requirements</div><div class="who">PS · o QUE</div></div>
+      <div class="gate"></div>
+      <div class="node"><div class="art">plan.md</div><div class="nm">Plan</div><div class="who">Tech Lead · o COMO</div></div>
+      <div class="gate"></div>
+      <div class="node"><div class="art">tasks.md</div><div class="nm">Tasks</div><div class="who">Dev + Copilot · atômicas</div></div>
+    </div>
+    <p style="font-size:.86rem;color:var(--ink-soft)">A cadeia fecha por ID: cada <code>REQ-xx</code> origina seções do plan e gera <code>TASK-xxx</code> com requisito de origem rastreável até o deploy.</p>
+  </section>
+
+  <!-- 3. REPO -->
+  <section id="repo">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Estrutura do Repositório</h2></div>
+    <p class="lead">Specs organizadas por módulo, ao lado dos ADRs herdados do discovery e das skills do projeto.</p>
+    <div class="note">A estrutura abaixo foi ancorada nos paths conhecidos do repositório. A pasta <code>/specs/</code> deve ser confirmada contra o <strong>Anexo C</strong> oficial antes da publicação final.</div>
+<pre><span class="repo-comment">db1/novatech-assistant/</span>
+├── docs/adr/                         <span class="repo-comment"># decisões do discovery (Cenário 1)</span>
+│   ├── ADR-0001-modelo-llm.md
+│   ├── ADR-0002-context-budget.md
+│   ├── ADR-0003-documentos-contraditorios.md
+│   └── ADR-0004-build-vs-buy.md
+├── <span class="repo-spec">specs/</span>                            <span class="repo-comment"># ⚠ confirmar no Anexo C</span>
+│   ├── ingestao-documentos/{requirements,plan,tasks}.md
+│   ├── query-endpoint/{requirements,plan,tasks}.md
+│   ├── feedback-api/{requirements,plan,tasks}.md
+│   ├── bot-teams/{requirements,plan,tasks}.md
+│   └── painel-web/{requirements,plan,tasks}.md
+├── src/functions/query/              <span class="repo-comment"># implementação</span>
+└── skills/{foundation,domain,artifact}/</pre>
+    <h3>Convenções</h3>
+    <p><b>Nomenclatura:</b> pasta por módulo em <code>kebab-case</code>; sempre os três arquivos fixos. <b>Versão aprovada:</b> tag git <code>spec/&lt;modulo&gt;/&lt;artefato&gt;/vN</code>. <b>Versionamento:</b> <code>vMAJOR.MINOR</code> — MAJOR muda contrato/escopo, MINOR esclarece sem quebrar. <b>Arquivamento:</b> versões antigas não são apagadas (coerente com ADR-0003); recebem <code>status: Superada por vN</code>.</p>
+  </section>
+
+  <!-- 4. GOVERNANÇA -->
+  <section id="gov">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Modelo de Governança</h2></div>
+    <p class="lead">Estrutura mínima obrigatória de cada artefato e a cadeia de rastreabilidade ponta a ponta.</p>
+    <div class="cards">
+      <div class="card"><h4>requirements.md</h4>
+        <p class="kv">Cabeçalho (módulo, versão, status, ADRs) · objetivo · escopo/fora-de-escopo · requisitos com <b>ID</b> (<code>REQ-QE-01</code>) · critérios de aceite verificáveis · glossário de domínio.</p></div>
+      <div class="card"><h4>plan.md</h4>
+        <p class="kv">Link ao requirements · arquitetura · contratos de API · stack (<b>TypeScript, Zod, Azure Functions v4, pino</b>) · context budget (ADR-0002) · decisões (ADRs) · riscos técnicos.</p></div>
+      <div class="card"><h4>tasks.md</h4>
+        <p class="kv">Link ao plan · tasks atômicas com <b>ID</b> (<code>TASK-QE-001</code>), dependências, critério de aceite e <b>requisito de origem</b>.</p></div>
+    </div>
+    <h3>Rastreabilidade ponta a ponta</h3>
+    <div class="flow">
+      <div class="node"><div class="nm">REQ</div><div class="who">requirements</div></div>
+      <div class="gate" style="min-width:30px"></div>
+      <div class="node"><div class="nm">PLAN</div><div class="who">seção que atende</div></div>
+      <div class="gate" style="min-width:30px"></div>
+      <div class="node"><div class="nm">TASK</div><div class="who">PR feat/&lt;mod&gt;-&lt;id&gt;</div></div>
+      <div class="gate" style="min-width:30px"></div>
+      <div class="node"><div class="nm">TESTE</div><div class="who">cita REQ/TASK</div></div>
+      <div class="gate" style="min-width:30px"></div>
+      <div class="node"><div class="nm">DEPLOY</div><div class="who">release lista REQ</div></div>
+    </div>
+    <p style="font-size:.86rem;color:var(--ink-soft)">A convenção de nomes amarra PR, commit, teste e release ao ID — dá para partir de qualquer requisito e chegar ao deploy, e vice-versa.</p>
+  </section>
+
+  <!-- 5. BOARD -->
+  <section id="board">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Board de Tracking</h2></div>
+    <p class="lead">Modelo gerado no Claude Cowork. Compatível com Azure DevOps, Jira, GitHub Projects e Planner. Ciclo de vida: Rascunho → Em Revisão → Aprovada → Em Implementação → Validada.</p>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Módulo</th><th>Tipo</th><th>Responsável</th><th>Status</th><th>Próxima aprovação</th><th>Dependências</th><th>Riscos</th></tr></thead>
+        <tbody>
+          <tr><td>Pipeline de Ingestão</td><td>requirements</td><td>Product Specialist</td><td><span class="pill st-apr">Aprovada</span></td><td>Plan (Tech Lead)</td><td>ADR-0004</td><td>Tabelas complexas no chunking</td></tr>
+          <tr><td>Pipeline de Ingestão</td><td>plan</td><td>Tech Lead</td><td><span class="pill st-rev">Em Revisão</span></td><td>Plan (Tech Lead)</td><td>requirements aprovado</td><td>OCR de docs escaneados</td></tr>
+          <tr><td>API de Busca (Query)</td><td>requirements</td><td>Product Specialist</td><td><span class="pill st-apr">Aprovada</span></td><td>Plan (Tech Lead)</td><td>ADR-0002</td><td>Context overflow multi-domínio</td></tr>
+          <tr><td>API de Busca (Query)</td><td>plan</td><td>Tech Lead</td><td><span class="pill st-rev">Em Revisão</span></td><td>Tasks (Tech Lead)</td><td>requirements aprovado</td><td>Latência do AI Search</td></tr>
+          <tr><td>API de Feedback</td><td>requirements</td><td>Product Specialist</td><td><span class="pill st-rev">Em Revisão</span></td><td>Requirements (TL)</td><td>query-endpoint</td><td>Baixa adesão dos atendentes</td></tr>
+          <tr><td>Bot do Teams</td><td>requirements</td><td>Product Specialist</td><td><span class="pill st-rasc">Rascunho</span></td><td>Requirements (TL)</td><td>query + feedback</td><td>Limite de 3 turnos (ADR-0002)</td></tr>
+          <tr><td>Painel Web</td><td>requirements</td><td>Product Specialist</td><td><span class="pill st-rasc">Rascunho</span></td><td>Requirements (TL)</td><td>feedback-api</td><td>Escopo de métricas indefinido</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.84rem;color:var(--ink-soft)"><b>Regras:</b> só vai a <span class="pill st-apr">Aprovada</span> com gate do Tech Lead registrado · <span class="pill st-impl">Em Implementação</span> exige spec tagueada · <span class="pill st-val">Validada</span> exige Gate 4 (QA) passado.</p>
+  </section>
+
+  <!-- 6. CHANGE MANAGEMENT -->
+  <section id="change">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Change Management</h2></div>
+    <p class="lead">Alterações após o início da implementação entram por um <strong>Spec Change Request (SCR)</strong> — issue com ID <code>SCR-&lt;nº&gt;</code>. Fluxo: solicitação → impacto → aprovação → atualização dos artefatos → tasks em curso → comunicação.</p>
+    <div class="cards">
+      <div class="card"><h4>Mudança de requisito</h4>
+        <p class="kv"><b>Solicita:</b> Product Specialist</p><p class="kv"><b>Avalia:</b> Tech Lead + QA</p><p class="kv"><b>Aprova:</b> Tech Lead (+DM se afeta prazo)</p><p class="kv"><b>Tasks em curso:</b> pausar e re-decompor</p></div>
+      <div class="card"><h4>Descoberta técnica</h4>
+        <p class="kv"><b>Solicita:</b> Dev / Tech Lead</p><p class="kv"><b>Avalia:</b> Tech Lead</p><p class="kv"><b>Aprova:</b> Tech Lead</p><p class="kv"><b>Tasks em curso:</b> seguem se não conflitam</p></div>
+      <div class="card"><h4>Correção de erro</h4>
+        <p class="kv"><b>Solicita:</b> qualquer papel</p><p class="kv"><b>Avalia:</b> Tech Lead</p><p class="kv"><b>Aprova:</b> Tech Lead</p><p class="kv"><b>Tasks em curso:</b> hotfix vira task nova</p></div>
+      <div class="card" style="border-top-color:var(--crit)"><h4>Mudança regulatória</h4>
+        <p class="kv"><b>Solicita:</b> Compliance / PS</p><p class="kv"><b>Avalia:</b> Tech Lead + PS</p><p class="kv"><b>Aprova:</b> Delivery Manager + TL</p><p class="kv"><b>Tasks em curso:</b> pode bloquear deploy</p></div>
+      <div class="card" style="border-top-color:var(--crit)"><h4>Mudança de escopo</h4>
+        <p class="kv"><b>Solicita:</b> PS / Patrocinador</p><p class="kv"><b>Avalia:</b> Tech Lead + DM</p><p class="kv"><b>Aprova:</b> Delivery Manager</p><p class="kv"><b>Tasks em curso:</b> fora do escopo são arquivadas</p></div>
+    </div>
+    <div class="note">Mudança pós-implementação <strong>não é gratuita</strong>: quando é MAJOR, a spec volta de <span class="pill st-impl">Em Implementação</span> para <span class="pill st-rev">Em Revisão</span> e reabre os gates — isso protege o time de implementar sobre contrato instável. A atualização registra o SCR no <code>## Histórico</code> de <code>requirements.md</code>, ajusta <code>plan.md</code>/<code>tasks.md</code> e é comunicada pelo DM no canal do projeto.</div>
+  </section>
+
+  <!-- 7. KPI -->
+  <section id="kpi">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Indicadores de Governança</h2></div>
+    <p class="lead">Métricas que medem a saúde do processo — cada uma ligada a um risco concreto do projeto.</p>
+    <div class="metric-grid">
+      <div class="metric"><h4>Tempo médio de aprovação</h4><p>Horas úteis entre Em Revisão e Aprovada. Revela gargalo nos gates.</p></div>
+      <div class="metric"><h4>Alterações após aprovação</h4><p>Nº de SCRs por módulo. Muitos SCRs = requisito imaturo no discovery.</p></div>
+      <div class="metric"><h4>Rastreabilidade REQ → Task</h4><p>Tasks com requisito de origem ÷ total. Evita código sem origem.</p></div>
+      <div class="metric"><h4>Tempo de processamento de mudança</h4><p>Horas entre abertura e fechamento do SCR. Mede agilidade sem perder controle.</p></div>
+      <div class="metric"><h4>% de specs atualizadas</h4><p>Specs que batem com o código entregue. Mantém o contrato executável vivo.</p></div>
+      <div class="metric"><h4>Cobertura de aprovação humana</h4><p>Transições com gate registrado. Garante o princípio "IA gera, humano valida".</p></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== RODAPÉ ===== -->
+<footer>
+  <div class="wrap">
+    <img src="https://www.db1group.com/wp-content/uploads/2021/03/logo-db1-group.svg" alt="DB1 Global Software"
+         onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<strong style=&quot;color:#fff;font-size:1rem&quot;>DB1 Global Software</strong>');">
+    <div class="meta">
+      <strong>Governança de Specs SDD — NovaTech Assistant</strong>
+      Ivan Ramos dos Santos · Gerente de Projetos · DB1 Global Software<br>
+      Documento de padrão de engenharia · Uso interno · Projeto db1/novatech-assistant
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
